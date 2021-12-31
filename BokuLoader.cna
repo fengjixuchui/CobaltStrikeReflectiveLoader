@@ -7,7 +7,6 @@
 #$debug = "true";
 $debug = "false";
 
-
 # ===========================================================================
 # 'case insensitive sort' from sleep manual...
 # ===========================================================================
@@ -62,7 +61,7 @@ sub generate_my_dll {
 	# Load a object file that contains a Reflective Loader.
 	# The architecture ($3) is used in the path.
 	# ---------------------------------------------------------------------
-$handle = openf(script_resource("/bin/ReflectiveLoader. $+ $3 $+ .o"));
+$handle = openf(script_resource("BokuLoader.o"));
 	$data   = readb($handle, -1);
 	closef($handle);
 
@@ -113,7 +112,6 @@ $handle = openf(script_resource("/bin/ReflectiveLoader. $+ $3 $+ .o"));
 	# 		pe_stomp
 	# ---------------------------------------------------------------------
 
-	println($debug);
 	if ($debug eq "true") {
 		dump_my_pe($temp_dll);
 	}
@@ -146,3 +144,22 @@ set BEACON_RDLL_GENERATE_LOCAL {
 	warn("========== Running 'BEACON_RDLL_GENERATE_LOCAL' for DLL " . $1 . " with architecture " . $3 . " Beacon ID " . $4 . " GetModuleHandleA " . $5 . " GetProcAddress " . $6 . " ==========");
 	return generate_my_dll($1, $2, $3);
 }
+
+# ------------------------------------
+# Override the beacon loader to load beacons with larger space reserved
+# for the User Defined Reflective Loader function.
+# Return a number for the required reflective loader space (in KB).
+# Valid return values: 0 (default - 5KB), 5 (original/standard), 100
+# Example for 100 KB:
+#    return "100";
+# See: BEACON_RDLL_GENERATE/BEACON_RDLL_GENERATE_LOCAL
+# ------------------------------------
+# $1 = dll name
+# $2 = arch
+# ------------------------------------
+# set BEACON_RDLL_SIZE {
+#	warn("========== Running 'BEACON_RDLL_SIZE' for DLL Name " . $1 . " with architecture " . $2);
+#	# return "0";
+#	# return "5";
+#	return "100";
+# }
