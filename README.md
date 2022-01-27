@@ -1,17 +1,23 @@
 # BokuLoader - Cobalt Strike Reflective Loader
 Cobalt Strike User-Defined Reflective Loader written in Assembly & C for advanced evasion capabilities.
 
+### Project Contributors: [Bobby Cooke @0xBoku](https://twitter.com/0xBoku) & [Santiago Pecin @s4ntiago_p](https://twitter.com/s4ntiago_p)
+
 ![](/images/top2.png)
 
 + Based on Stephen Fewer's incredible Reflective Loader project: 
   + https://github.com/stephenfewer/ReflectiveDLLInjection
-+ Created while working through Renz0h's Reflective DLL videos from the [Sektor7 Malware Developer Intermediate (MDI) Course](https://institute.sektor7.net/courses/rto-maldev-intermediate/) 
++ Initially created while working through Renz0h's Reflective DLL videos from the [Sektor7 Malware Developer Intermediate (MDI) Course](https://institute.sektor7.net/courses/rto-maldev-intermediate/) 
 
 ## Versions
 + Different version of this User-Defined Reflective Loader project can be found in the versions folder
 
 | Version | File | Description |
 |:-------:|:-----|:------------|
+|1.0|BokuLoader-v1.0.c| Massive update from [@s4ntiago_p](https://twitter.com/s4ntiago_p)! New 32bit loader with WOW64 support, 32bit Halos&HellsGate, code optimizations & bug fixes! | 
+|0.81|BokuLoader-v0.81.c| HellsGate&HalosGate direct syscalls added by [@s4ntiago_p](https://twitter.com/s4ntiago_p) are now an optional feature! | 
+|0.8|BokuLoader-v0.8.c|  [@s4ntiago_p](https://twitter.com/s4ntiago_p) from CoreSecurity pushed a massive update: HellsGate & HalosGate syscaller, makefile, bug fixes, and more! |
+|0.71|BokuLoader-v0.71.c| #NOHEADERCOPY Feature Added! Loader will not copy headers over to beacon. Decommits the first memory page which would normally hold the headers.|
 |0.7|BokuLoader-v0_7.c| Updated to work with Cobalt Strike v4.5! |
 |0.6|ReflectiveLoader-v0_6.c| NoRWX feature added! The Reflective loader writes beacon with Read & Write permissions and after resolving Beacons Import Table & Relocations, changes the .TEXT code section of Beacon to Read & Execute permissions |
 |0.5|ReflectiveLoader-v0_5.c| Added HellsGate & HalosGate direct syscaller, replaced allot of ASM stubs, code refactor, and ~500 bytes smaller. Credit to @SEKTOR7net the jedi HalosGate creator & @smelly__vx & @am0nsec Creators/Publishers of the Hells Gate technique! Credit to @ilove2pwn_ for recommending removing ASM Stubs! Haven't got all of them, but will keep working at it :) |
@@ -23,7 +29,7 @@ Cobalt Strike User-Defined Reflective Loader written in Assembly & C for advance
 
 ## Usage
 1. Start your Cobalt Strike Team Server with or without a profile.
-2. Go to your Cobalt Strike GUI and import the BokuLoader.cna Agressor script.   
+2. Go to your Cobalt Strike GUI and import the BokuLoader.cna Aggressor script.   
 ![](/images/loadRdllScriptMenu.png)
 3. Generate your x64 payload (Attacks -> Packages -> Windows Executable (S))
   + Does not support x86 option. The x86 bin is the original Reflective Loader object file.  
@@ -32,8 +38,8 @@ Cobalt Strike User-Defined Reflective Loader written in Assembly & C for advance
   + If successful, the output in the Script Console will look like this:  
 ![](/images/beaconCreateSuccess.png)
 
-## Build (Only tested from macOS at the moment)
-1. Run the compile-x64.sh shell script after installling required dependencies
+## Build
+1. Run the `make` command after installling required dependencies
 ```bash
 # Install brew on macOS if you need it (https://brew.sh/)
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -43,9 +49,7 @@ brew install mingw-w64
 git clone https://github.com/boku7/BokuLoader.git
 # Compile the BokuLoader Object file
 cd BokuLoader/
-cat compile-x64.sh
-x86_64-w64-mingw32-gcc -c BokuLoader.c -o BokuLoader.o -shared -masm=intel
-bash compile-x64.sh
+make
 ```
 2. Follow "Usage" instructions
 

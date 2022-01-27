@@ -61,7 +61,8 @@ sub generate_my_dll {
 	# Load a object file that contains a Reflective Loader.
 	# The architecture ($3) is used in the path.
 	# ---------------------------------------------------------------------
-$handle = openf(script_resource("BokuLoader.o"));
+
+	$handle = openf(script_resource("BokuLoader.".$3.".o"));
 	$data   = readb($handle, -1);
 	closef($handle);
 
@@ -157,9 +158,7 @@ set BEACON_RDLL_GENERATE_LOCAL {
 # $1 = dll name
 # $2 = arch
 # ------------------------------------
-# set BEACON_RDLL_SIZE {
-#	warn("========== Running 'BEACON_RDLL_SIZE' for DLL Name " . $1 . " with architecture " . $2);
-#	# return "0";
-#	# return "5";
-#	return "100";
-# }
+set BEACON_RDLL_SIZE {
+	warn("========== Running 'BEACON_RDLL_SIZE' for DLL Name " . $1 . " with architecture " . $2);
+	return "100";
+}
