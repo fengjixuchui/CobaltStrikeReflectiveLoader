@@ -1,14 +1,9 @@
 CC_x64 := x86_64-w64-mingw32-gcc
-CC_x86 := i686-w64-mingw32-gcc
-STRIP_x64 := x86_64-w64-mingw32-strip
-STRIP_x86 := i686-w64-mingw32-strip
-OPTIONS := -masm=intel -Wall -Wno-pointer-arith
+CFLAGS	:= $(CFLAGS) -O0 
+CFLAGS  := $(CFLAGS) -masm=intel -Wall -Wno-pointer-arith -w
 
 bokuloader: clean
-	$(CC_x64) -c BokuLoader64.c -o BokuLoader.x64.o $(OPTIONS)
-	$(STRIP_x64) --strip-unneeded BokuLoader.x64.o
-	$(CC_x86) -c BokuLoader32.c -o BokuLoader.x86.o $(OPTIONS)
-	$(STRIP_x86) --strip-unneeded BokuLoader.x86.o
-
+	$(CC_x64) $(CFLAGS) -c src/BokuLoader.c -o dist/BokuLoader.x64.o 
 clean:
-	rm -f *.o
+	rm -f dist/*.o
+	rm -f ./*.c
